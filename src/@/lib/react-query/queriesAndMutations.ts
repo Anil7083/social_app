@@ -4,7 +4,7 @@ import {
     useMutation,
     useQueryClient,
     useInfiniteQuery,
-    QueryClient,
+    QueryFunctionContext,
 } from '@tanstack/react-query'
 import { createPost, createUserAccount, deletePost, deleteSavedPost, getCurrentUser, getInfinitePosts, getPostById, getRecentPosts, getUserById, getUserPosts, getUsers, likePost, savePost, searchPosts, signInAccount, signOutAccount, updatePost, updateUser } from '../appwrite/api'
 import { QUERY_KEYS } from './queryKeys'
@@ -154,19 +154,41 @@ export const useDeletePost = () => {
     })
 }
 
-export const useGetPosts = () => {
+// export const useGetPosts = () => {
+//     return useInfiniteQuery({
+//       queryKey: [QUERY_KEYS.GET_INFINITE_POSTS],
+//       queryFn: getInfinitePosts,
+//       getNextPageParam: (lastPage) => {
+//         // If there's no data, there are no more pages.
+//         if (lastPage && lastPage.documents.length === 0) {
+//           return null;
+//         }
+  
+//         // Use the $id of the last document as the cursor.
+//         const lastId = lastPage?.documents[lastPage?.documents.length - 1].$id;
+//         return lastId;
+//       },
+//       initialPageParam: 1, 
+//     });
+//   };
+  
+  export const useGetPosts = () => {
     return useInfiniteQuery({
         queryKey: [QUERY_KEYS.GET_INFINITE_POSTS],
-        queryFn: getInfinitePosts,
+        queryFn: ({ pageParam }: QueryFunctionContext<QUERY_KEYS[], string>) => getInfinitePosts({pageParam}),
         getNextPageParam: (lastPage) => {
-            if (lastPage && lastPage.documents.length === 0) return null;
+            // If there's no data, there are no more pages.
+            if (lastPage && lastPage.documents.length === 0) {
+                return null;
+            }
 
-            const lastId = lastPage?.documents[lastPage?.documents.length - 1].$id;
-
+            // Use the $id of the last document as the cursor.
+            const lastId = lastPage?.documents[lastPage?.documents.length - 1]?.$id;
             return lastId;
-        }
-    })
-}
+        },
+        initialPageParam: '1', // Convert to string
+    });
+};
 
 export const useSearchPost=(searchTerm:string)=>{
     return useQuery({

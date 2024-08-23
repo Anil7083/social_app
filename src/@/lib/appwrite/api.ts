@@ -224,8 +224,12 @@ export async function searchPosts(searchTerm: string) {
   }
 }
 
-export async function getInfinitePosts({ pageParam }: { pageParam: number }) {
-  const queries: any[] = [Query.orderDesc("$updatedAt"), Query.limit(9)];
+export async function getInfinitePosts({ pageParam }: { pageParam?: string }) {
+  const  queries: (string | ReturnType<typeof Query.orderDesc | typeof Query.limit | typeof Query.cursorAfter>)[] = [
+    Query.orderDesc("$updatedAt"),
+    Query.limit(9)
+  ];
+
 
   if (pageParam) {
     queries.push(Query.cursorAfter(pageParam.toString()));
@@ -449,7 +453,7 @@ export async function getRecentPosts() {
 
 // ============================== GET USERS
 export async function getUsers(limit?: number) {
-  const queries: any[] = [Query.orderDesc("$createdAt")];
+  const queries: (string | ReturnType<typeof Query.orderDesc | typeof Query.limit | typeof Query.cursorAfter>)[]  = [Query.orderDesc("$createdAt")];
 
   if (limit) {
     queries.push(Query.limit(limit));
