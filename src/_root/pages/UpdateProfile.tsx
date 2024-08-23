@@ -2,16 +2,16 @@ import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate, useParams } from "react-router-dom";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage,} from "@/@/components/ui/form";
-import { useToast } from "@/@/components/ui/use-toast";
-import { ProfileValidation } from "@/@/lib/validation";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage,} from "src/@/components/ui/form";
+import { useToast } from "src/@/components/ui/use-toast";
+import { ProfileValidation } from "src/@/lib/validation";
 import { useUserContext } from "@/context/AuthContext";
-import { Input } from "@/@/components/ui/input";
-import { Textarea } from "@/@/components/ui/textarea";
-import { Button } from "@/@/components/ui/button";
-import Loader from "@/@/components/shared/Loader";
-import ProfileUploader from "@/@/components/shared/ProfileUploader";
-import { useGetUserById, useUpdateUser } from "@/@/lib/react-query/queriesAndMutations";
+import { Input } from "src/@/components/ui/input";
+import { Textarea } from "src/@/components/ui/textarea";
+import { Button } from "src/@/components/ui/button";
+import Loader from "src/@/components/shared/Loader";
+import ProfileUploader from "src/@/components/shared/ProfileUploader";
+import { useGetUserById, useUpdateUser } from "src/@/lib/react-query/queriesAndMutations";
 
 const UpdateProfile = () => {
   const { toast } = useToast();

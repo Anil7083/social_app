@@ -1,5 +1,5 @@
-import { useDeleteSavedPost, useGetCurrentUser, useLikePost, useSavePost } from "@/@/lib/react-query/queriesAndMutations";
-import { checkIsLiked } from "@/@/lib/utils";
+import { useDeleteSavedPost, useGetCurrentUser, useLikePost, useSavePost } from "src/@/lib/react-query/queriesAndMutations";
+import { checkIsLiked } from "src/@/lib/utils";
 import { Models } from "appwrite";
 import React, { useEffect, useState } from "react";
 import Loader from "./Loader";

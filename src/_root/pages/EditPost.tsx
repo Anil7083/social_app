@@ -1,6 +1,6 @@
-import PostForm from "@/@/components/forms/PostForm"
-import Loader from "@/@/components/shared/Loader";
-import { useGetPostById } from "@/@/lib/react-query/queriesAndMutations";
+import PostForm from "src/@/components/forms/PostForm"
+import Loader from "src/@/components/shared/Loader";
+import { useGetPostById } from "src/@/lib/react-query/queriesAndMutations";
 import { useParams } from "react-router-dom"
 
 

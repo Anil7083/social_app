@@ -3,14 +3,14 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Link, useNavigate } from "react-router-dom";
 
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/@/components/ui/form";
-import { Input } from "@/@/components/ui/input";
-import { Button } from "@/@/components/ui/button";
-import Loader from "@/@/components/shared/Loader";
-import { useToast } from "@/@/components/ui/use-toast";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "src/@/components/ui/form";
+import { Input } from "src/@/components/ui/input";
+import { Button } from "src/@/components/ui/button";
+import Loader from "src/@/components/shared/Loader";
+import { useToast } from "src/@/components/ui/use-toast";
 
-import { SigninValidation } from "@/@/lib/validation";
-import { useSignInAccount } from "@/@/lib/react-query/queriesAndMutations";
+import { SigninValidation } from "src/@/lib/validation";
+import { useSignInAccount } from "src/@/lib/react-query/queriesAndMutations";
 import { useUserContext } from "@/context/AuthContext";
 
 const SigninForm = () => {

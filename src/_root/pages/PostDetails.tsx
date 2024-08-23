@@ -1,9 +1,9 @@
-import GridPostList from "@/@/components/shared/GridPostList";
-import Loader from "@/@/components/shared/Loader";
-import PostStats from "@/@/components/shared/PostStats";
-import { Button } from "@/@/components/ui/button";
-import { useDeletePost, useGetPostById, useGetUserPosts } from "@/@/lib/react-query/queriesAndMutations";
-import { multiFormatDateString } from "@/@/lib/utils";
+import GridPostList from "src/@/components/shared/GridPostList";
+import Loader from "src/@/components/shared/Loader";
+import PostStats from "src/@/components/shared/PostStats";
+import { Button } from "src/@/components/ui/button";
+import { useDeletePost, useGetPostById, useGetUserPosts } from "src/@/lib/react-query/queriesAndMutations";
+import { multiFormatDateString } from "src/@/lib/utils";
 import { useUserContext } from "@/context/AuthContext";
 import { Link, useNavigate, useParams } from "react-router-dom"
 
