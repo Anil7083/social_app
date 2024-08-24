@@ -7,12 +7,12 @@ import {
   useLocation,
 } from "react-router-dom";
 
-import { Button } from "src/@/components/ui/button";
+import { Button } from "@/@/components/ui/button";
 import { LikedPosts } from "@/_root/pages";
 import { useUserContext } from "@/context/AuthContext";
-import { useGetUserById } from "src/@/lib/react-query/queriesAndMutations";
-import Loader from "src/@/components/shared/Loader";
-import GridPostList from "src/@/components/shared/GridPostList";
+import { useGetUserById } from "@/@/lib/react-query/queriesAndMutations";
+import Loader from "@/@/components/shared/Loader";
+import GridPostList from "@/@/components/shared/GridPostList";
 
 interface StabBlockProps {
   value: string | number;

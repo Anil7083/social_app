@@ -1,8 +1,7 @@
-import GridPostList from "src/@/components/shared/GridPostList";
-import Loader from "src/@/components/shared/Loader";
-//import SearchResults from "src/@/components/shared/SearchResults";
-import { Input } from "src/@/components/ui/input"
-import { useGetPosts, useSearchPost } from "src/@/lib/react-query/queriesAndMutations";
+import GridPostList from "@/@/components/shared/GridPostList";
+import Loader from "@/@/components/shared/Loader";
+import { Input } from "@/@/components/ui/input"
+import { useGetPosts, useSearchPost } from "@/@/lib/react-query/queriesAndMutations";
 import useDebounce from "@/hooks/useDebounce";
 import { Models } from "appwrite";
 import { useEffect, useState } from "react"
