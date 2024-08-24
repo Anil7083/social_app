@@ -20,7 +20,7 @@ const FileUploader = ({fieldChange,mediaUrl}:FileUploaderProps) => {
 
 
 
-  const { getRootProps, getInputProps} = useDropzone({ onDrop, accept:{'image/*':['.png','.jpeg','.jpg','.svg']} })
+  const { getRootProps, getInputProps} = useDropzone({ onDrop, accept:{'image/*':['.png','.jpeg','.jpg','.svg','.webp']} })
   return (
     <div {...getRootProps()} className='flex flex-center flex-col bg-dark-3 rounded-xl cursor-pointer'>
       <input {...getInputProps()} className='cursor-pointer'/>
