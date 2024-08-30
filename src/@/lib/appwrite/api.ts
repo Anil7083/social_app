@@ -162,16 +162,16 @@ export async function createPost(post: INewPost) {
 }
 
 //=====================comments post
-export async function commentPost(comments:INewComments){
+export async function commentPost(comments: INewComments) {
   try {
-    const newComments=await databases.createDocument(
+    const newComments = await databases.createDocument(
       appwriteConfig.databaseId,
       appwriteConfig.commentsCollectionId,
-      ID.unique(),{
-        comUser:comments.userId,
-        post:comments.postId,
-        comments:comments.comment,
-      }
+      ID.unique(), {
+      comUser: comments.userId,
+      post: comments.postId,
+      comments: comments.comment,
+    }
     );
     return newComments;
   } catch (error) {
@@ -243,7 +243,7 @@ export async function searchPosts(searchTerm: string) {
 }
 
 export async function getInfinitePosts({ pageParam }: { pageParam?: string }) {
-  const  queries: (string | ReturnType<typeof Query.orderDesc | typeof Query.limit | typeof Query.cursorAfter>)[] = [
+  const queries: (string | ReturnType<typeof Query.orderDesc | typeof Query.limit | typeof Query.cursorAfter>)[] = [
     Query.orderDesc("$updatedAt"),
     Query.limit(9)
   ];
@@ -492,7 +492,7 @@ export async function getRecentPosts() {
 
 // ============================== GET USERS
 export async function getUsers(limit?: number) {
-  const queries: (string | ReturnType<typeof Query.orderDesc | typeof Query.limit | typeof Query.cursorAfter>)[]  = [Query.orderDesc("$createdAt")];
+  const queries: (string | ReturnType<typeof Query.orderDesc | typeof Query.limit | typeof Query.cursorAfter>)[] = [Query.orderDesc("$createdAt")];
 
   if (limit) {
     queries.push(Query.limit(limit));
