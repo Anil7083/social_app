@@ -3,6 +3,7 @@ import { useUserContext } from "@/context/AuthContext";
 import { Models } from "appwrite"
 import { Link } from "react-router-dom";
 import PostStats from "./PostStats";
+import DisplayComments from "./DisplayComments";
 
 type PostCardProps = {
     post: Models.Document;
@@ -59,6 +60,9 @@ const PostCard = ({ post }: PostCardProps) => {
             </Link>
 
             <PostStats post={post} userId={user.id} />
+            <DisplayComments post={post} />
+
+            
         </div>
     )
 }

@@ -1,7 +1,7 @@
 import { ID, ImageGravity, Query } from "appwrite";
 
 import { appwriteConfig, account, databases, storage, avatars } from "./config";
-import { IUpdatePost, INewPost, INewUser, IUpdateUser } from "@/types";
+import { IUpdatePost, INewPost, INewUser, IUpdateUser, INewComments } from "@/types";
 
 // ============================================================
 // AUTH
@@ -156,6 +156,24 @@ export async function createPost(post: INewPost) {
     }
 
     return newPost;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+//=====================comments post
+export async function commentPost(comments:INewComments){
+  try {
+    const newComments=await databases.createDocument(
+      appwriteConfig.databaseId,
+      appwriteConfig.commentsCollectionId,
+      ID.unique(),{
+        comUser:comments.userId,
+        post:comments.postId,
+        comments:comments.comment,
+      }
+    );
+    return newComments;
   } catch (error) {
     console.log(error);
   }
@@ -392,6 +410,27 @@ export async function savePost(userId: string, postId: string) {
     return updatedPost;
   } catch (error) {
     console.log(error);
+  }
+}
+
+export async function getComment(userId: string, postId: string) {
+  try {
+    const response = await databases.listDocuments(
+      appwriteConfig.databaseId,
+      appwriteConfig.commentsCollectionId,
+      [
+        Query.equal('user', userId),
+        Query.equal('post', postId),
+      ]
+    );
+    if (response.total === 0) {
+      throw new Error('Comment not found');
+    }
+
+    return response.documents[0]; // Assuming you expect only one document matching the criteria
+  } catch (error) {
+    console.error('Error fetching comment:', error);
+    throw error;
   }
 }
 // ============================== DELETE SAVED POST

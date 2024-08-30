@@ -26,4 +26,9 @@ export const ProfileValidation = z.object({
     email: z.string().email(),
     bio: z.string(),
   });
+export const CommentValidation=z.object({
+    comment:z.string().min(5,{message:"comment must be at least 5 chatacters."}),
+    imageId: z.string().optional(), // Define imageId as optional
+
+})
   

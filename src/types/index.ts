@@ -29,7 +29,13 @@ export type INavLink = {
     location?: string;
     tags?: string;
   };
-  
+  export type INewComments={
+    postId:string;
+    imageId:string;
+    userId?:string;
+    comment:string;
+  }
+
   export type IUpdatePost = {
     postId: string;
     caption: string;

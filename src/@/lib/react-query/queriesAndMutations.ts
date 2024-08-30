@@ -1,4 +1,4 @@
-import { INewPost, INewUser, IUpdatePost, IUpdateUser } from '@/types'
+import { INewComments, INewPost, INewUser, IUpdatePost, IUpdateUser } from '@/types'
 import {
     useQuery,
     useMutation,
@@ -6,7 +6,7 @@ import {
     useInfiniteQuery,
     QueryFunctionContext,
 } from '@tanstack/react-query'
-import { createPost, createUserAccount, deletePost, deleteSavedPost, getCurrentUser, getInfinitePosts, getPostById, getRecentPosts, getUserById, getUserPosts, getUsers, likePost, savePost, searchPosts, signInAccount, signOutAccount, updatePost, updateUser } from '../appwrite/api'
+import { commentPost, createPost, createUserAccount, deletePost, deleteSavedPost, getComment, getCurrentUser, getInfinitePosts, getPostById, getRecentPosts, getUserById, getUserPosts, getUsers, likePost, savePost, searchPosts, signInAccount, signOutAccount, updatePost, updateUser } from '../appwrite/api'
 import { QUERY_KEYS } from './queryKeys'
 
 export const useCreateUserAccount = () => {
@@ -38,6 +38,17 @@ export const useCreatePost = () => {
         onSuccess: () => {
             queryCliet.invalidateQueries({
                 queryKey: [QUERY_KEYS.GET_RECENT_POSTS]
+            })
+        }
+    })
+}
+export const useCommentPost=()=>{
+    const queryClient=useQueryClient();
+    return useMutation({
+        mutationFn:(comments: INewComments)=>commentPost(comments),
+        onSuccess:()=>{
+            queryClient.invalidateQueries({
+                queryKey:[QUERY_KEYS.GET_COMMENTS_POSTS]
             })
         }
     })
@@ -104,6 +115,24 @@ export const useSavePost = () => {
             queryClient.invalidateQueries({
                 queryKey: [QUERY_KEYS.GET_CURRENT_USER],
             });
+        },
+    });
+};
+
+export const useGetComment=()=>{
+    const queryClient=useQueryClient();
+    return useMutation({
+        mutationFn:({userId,postId}:{userId:string; postId:string})=>getComment(userId,postId),
+        onSuccess:()=>{
+            queryClient.invalidateQueries({
+                queryKey:[QUERY_KEYS.GET_COMMENTS_POSTS],
+            });
+            queryClient.invalidateQueries({
+                queryKey:[QUERY_KEYS.GET_USERS],
+            });
+            queryClient.invalidateQueries({
+                queryKey:[QUERY_KEYS.GET_POSTS]
+            })
         },
     });
 };
