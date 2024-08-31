@@ -5,7 +5,7 @@ import { useUserContext } from "@/context/AuthContext";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CommentValidation } from "@/@/lib/validation";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "../ui/form";
-import { useCommentPost} from "@/@/lib/react-query/queriesAndMutations";
+import { useCommentPost } from "@/@/lib/react-query/queriesAndMutations";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import Loader from "./Loader";
@@ -14,11 +14,12 @@ import Loader from "./Loader";
 
 type CommentsFormProps = {
     comments?: Models.Document;
-    post?:Models.Document;
+    post?: Models.Document;
     action: "Create";
+    onCommentSubmit: (newComment: Models.Document) => void;
 };
 
-const Comment = ({ comments,post, action }: CommentsFormProps) => {
+const Comment = ({ comments, post, action, onCommentSubmit }: CommentsFormProps) => {
     const { toast } = useToast();
     const { user } = useUserContext();
     const form = useForm<z.infer<typeof CommentValidation>>({
@@ -34,18 +35,24 @@ const Comment = ({ comments,post, action }: CommentsFormProps) => {
         // ACTION = CREATE
         const newComment = await commentPost({
             ...value,
-            userId: user?.id || "", 
-            postId: post?.$id || "", 
+            userId: user?.id || "",
+            postId: post?.$id || "",
             imageId: value.imageId || "", // Correctly access imageId
 
         });
-        
 
-        if (!newComment) {
+
+        if (newComment) {
             toast({
-                title: `${action} post failed. Please try again.`,
+                title: 'comment send successfully',
             });
-        }console.log(newComment)
+            form.reset();
+            onCommentSubmit(newComment);
+        } else {
+            toast({
+                title: `${action}comment failed. please try again.`
+            })
+        }
     };
 
 
@@ -56,7 +63,7 @@ const Comment = ({ comments,post, action }: CommentsFormProps) => {
             <Form {...form}>
                 <form
                     onSubmit={form.handleSubmit(handleComment)}
-                    className="flex flex-1 gap-3  max-w-5xl">
+                    className="flex flex-1 gap-3  max-w-5xl ml-2 mt-3">
 
                     <FormField
                         control={form.control}
@@ -64,8 +71,7 @@ const Comment = ({ comments,post, action }: CommentsFormProps) => {
                         render={({ field }) => (
                             <FormItem>
                                 <FormControl>
-                                    <Input type="text" className="shad-input w-89 " {...field} placeholder="Comment here..." />
-                                    
+                                    <Input type="text" className="block py-2.5 px-1.5 w-full text-sm text-white bg-transparent border-0 border-b-2 border-green-600 appearance-none" {...field} placeholder="Comment here..." />
                                 </FormControl>
                                 <FormMessage className="shad-form_message" />
                             </FormItem>
@@ -75,7 +81,7 @@ const Comment = ({ comments,post, action }: CommentsFormProps) => {
                         type="submit"
                         disabled={isLoadingCreate} className="w-5 h-5 mt-3" >
                         {(isLoadingCreate) && <Loader />}
-                         <img src="/assets/icons/send.png" width={20} height={20}  className="cursor-pointer" />
+                        <img src="/assets/icons/send.png" width={20} height={20} className="cursor-pointer" />
                     </button>
                 </form>
             </Form>

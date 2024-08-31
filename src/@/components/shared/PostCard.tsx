@@ -4,14 +4,20 @@ import { Models } from "appwrite"
 import { Link } from "react-router-dom";
 import PostStats from "./PostStats";
 import DisplayComments from "./DisplayComments";
+import { useState } from "react";
+import Comment from "./Comment";
 
 type PostCardProps = {
     post: Models.Document;
 }
 const PostCard = ({ post }: PostCardProps) => {
-    const {user}=useUserContext();
-    
-    if(!post.creator) return;
+    const [comments, setComments] = useState<Models.Document[]>(post.comments || []);
+    const { user } = useUserContext();
+
+    const addComment = (newComment: Models.Document) => {
+        setComments(prevComments => [newComment, ...prevComments]);
+    };
+    if (!post.creator) return;
     return (
         <div className="post-card">
             <div className="flex-between">
@@ -37,32 +43,33 @@ const PostCard = ({ post }: PostCardProps) => {
                     </div>
                 </div>
 
-                <Link to={`/update-post/${post.$id}`} 
-                className={`${user.id !== post.creator.$id && "hidden"}`}
+                <Link to={`/update-post/${post.$id}`}
+                    className={`${user.id !== post.creator.$id && "hidden"}`}
                 >
                     <img src="/assets/icons/edit.svg" alt="edit" width={20} height={20} />
                 </Link>
             </div>
 
             <Link to={`/post/${post.$id}`}>
-            <div className="small-medium lg:base-medium py-5">
-                <p>{post.caption}</p>
-                <ul className="flex gap-1 mt-2">
-                    {post.tags.map((tag:string)=>(
-                        <li key={tag} className="text-light-3">
-                            #{tag}
-                        </li>
-                    ))}
-                </ul>
-            </div>
-            
-            <img src={post.imageUrl || '/assets/icons/profile-placeholder.svg'} alt="post image" className="post-card_img"/>
+                <div className="small-medium lg:base-medium py-5">
+                    <p>{post.caption}</p>
+                    <ul className="flex gap-1 mt-2">
+                        {post.tags.map((tag: string) => (
+                            <li key={tag} className="text-light-3">
+                                #{tag}
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+
+                <img src={post.imageUrl || '/assets/icons/profile-placeholder.svg'} alt="post image" className="post-card_img" />
             </Link>
 
             <PostStats post={post} userId={user.id} />
-            <DisplayComments post={post} />
+            <Comment post={post} action="Create" onCommentSubmit={addComment} />
+            <DisplayComments post={{ ...post, comments }} />
 
-            
+
         </div>
     )
 }

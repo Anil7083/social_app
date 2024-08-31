@@ -28,17 +28,15 @@ const DisplayComments = ({ post }: CommentCardProps) => {
                 <h1 className="ml-4 mt-3 text-slate-500 ">view comments..{getComment.length}s</h1>
                 }
             </div>
-
-
             {clickComment && (
                 <div className="flex-coll items-center mt-3">
                     {getComment.map((post, index) => (
-                        <div key={index} className="border-solid border-2 border-indigo-600 rounded-xl mb-1 ">
+                        <div key={index} className="border-solid border-2 border-slate-900 rounded-xl mb-1 ">
                             <div className="flex ml-2">
                                 <img src={post.comUser.imageUrl} alt="comUser" className="w-10 rounded-full mt-2 mb-1 " />
-                                <h1 className="pt-2 ml-2 text-gray-500">{post.comUser.name}</h1>
+                                <h1 className="pt-2 ml-2 font-medium dark:text-white">{post.comUser.name}</h1>
                             </div>
-                            <p className="ml-14 -mt-5 font-medium text-slate-200">{post.comment}</p>
+                            <p className="ml-14 -mt-5 text-sm text-gray-500 dark:text-gray-400 mb-1">{post.comment}</p>
 
                         </div>
                     ))}
