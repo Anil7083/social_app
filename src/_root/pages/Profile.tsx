@@ -7,12 +7,12 @@ import {
   useLocation,
 } from "react-router-dom";
 
-import { Button } from "@/@/components/ui/button";
 import { LikedPosts } from "@/_root/pages";
 import { useUserContext } from "@/context/AuthContext";
 import { useGetUserById } from "@/@/lib/react-query/queriesAndMutations";
 import Loader from "@/@/components/shared/Loader";
 import GridPostList from "@/@/components/shared/GridPostList";
+import FollowEvent from "@/@/components/shared/FollowEvent";
 
 interface StabBlockProps {
   value: string | number;
@@ -27,11 +27,13 @@ const StatBlock = ({ value, label }: StabBlockProps) => (
 );
 
 const Profile = () => {
+  
   const { id } = useParams();
   const { user } = useUserContext();
   const { pathname } = useLocation();
 
   const { data: currentUser } = useGetUserById(id || "");
+
 
   if (!currentUser)
     return (
@@ -76,9 +78,8 @@ const Profile = () => {
             <div className={`${user.id !== currentUser.$id && "hidden"}`}>
               <Link
                 to={`/update-profile/${currentUser.$id}`}
-                className={`h-12 bg-dark-4 px-5 text-light-1 flex-center gap-2 rounded-lg ${
-                  user.id !== currentUser.$id && "hidden"
-                }`}>
+                className={`h-12 bg-dark-4 px-5 text-light-1 flex-center gap-2 rounded-lg ${user.id !== currentUser.$id && "hidden"
+                  }`}>
                 <img
                   src={"/assets/icons/edit.svg"}
                   alt="edit"
@@ -91,9 +92,8 @@ const Profile = () => {
               </Link>
             </div>
             <div className={`${user.id === id && "hidden"}`}>
-              <Button type="button" className="shad-button_primary px-8">
-                Follow
-              </Button>
+                    <FollowEvent currentUserId={currentUser.$id} targetUserId={user.id} />
+
             </div>
           </div>
         </div>
@@ -103,9 +103,8 @@ const Profile = () => {
         <div className="flex max-w-5xl w-full">
           <Link
             to={`/profile/${id}`}
-            className={`profile-tab rounded-l-lg ${
-              pathname === `/profile/${id}` && "!bg-dark-3"
-            }`}>
+            className={`profile-tab rounded-l-lg ${pathname === `/profile/${id}` && "!bg-dark-3"
+              }`}>
             <img
               src={"/assets/icons/posts.svg"}
               alt="posts"
@@ -116,9 +115,8 @@ const Profile = () => {
           </Link>
           <Link
             to={`/profile/${id}/liked-posts`}
-            className={`profile-tab rounded-r-lg ${
-              pathname === `/profile/${id}/liked-posts` && "!bg-dark-3"
-            }`}>
+            className={`profile-tab rounded-r-lg ${pathname === `/profile/${id}/liked-posts` && "!bg-dark-3"
+              }`}>
             <img
               src={"/assets/icons/like.svg"}
               alt="like"

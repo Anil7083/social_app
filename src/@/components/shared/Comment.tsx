@@ -9,8 +9,6 @@ import { useCommentPost } from "@/@/lib/react-query/queriesAndMutations";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import Loader from "./Loader";
-//import { Button } from "../ui/button";
-
 
 type CommentsFormProps = {
     comments?: Models.Document;

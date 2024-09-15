@@ -1,7 +1,7 @@
 import { ID, ImageGravity, Query } from "appwrite";
 
 import { appwriteConfig, account, databases, storage, avatars } from "./config";
-import { IUpdatePost, INewPost, INewUser, IUpdateUser, INewComments } from "@/types";
+import { IUpdatePost, INewPost, INewUser, IUpdateUser, INewComments} from "@/types";
 
 // ============================================================
 // AUTH
@@ -160,6 +160,88 @@ export async function createPost(post: INewPost) {
     console.log(error);
   }
 }
+
+export async function followUser(followerId: string, followedUserId: string): Promise<void> {
+  try {
+    await databases.createDocument(
+      appwriteConfig.databaseId,
+      appwriteConfig.userRelationCollectionId,
+      ID.unique(), {
+      followerId,
+      followedUserId,
+    }
+    )
+    console.log('followed successfully');
+  } catch (error) {
+    console.log('Error Following User:', error);
+  }
+}
+export async function unFollowUser(documentId: string): Promise<void> {
+  try {
+    // Verify if document exists
+    const document = await databases.getDocument(
+      appwriteConfig.databaseId,
+      appwriteConfig.userRelationCollectionId,
+      documentId
+    );
+    
+    if (document) {
+      await databases.deleteDocument(
+        appwriteConfig.databaseId,
+        appwriteConfig.userRelationCollectionId,
+        documentId
+      );
+      console.log('Unfollowed successfully');
+    } else {
+      console.log('Document not found, cannot unfollow');
+    }
+  } catch (error) {
+    console.log('Error unfollowUser:', error);
+  }
+}
+
+
+export async function isFollowing(followerId:string,followedUserId:string):Promise<string | null>{
+  try {
+    const response=await databases.listDocuments(
+      appwriteConfig.databaseId,
+      appwriteConfig.userRelationCollectionId,
+      [
+        Query.equal('followerId',followerId),
+        Query.equal('followedUserId',followedUserId),
+      ]
+    )
+    if(response.total > 0){
+      console.log(response)
+      return response.documents[0].$id;
+    }else{
+      return null;
+    }
+  } catch (error) {
+    console.log('error checking follow status:',error);
+    return null;
+  }
+}
+
+// export const getFollowers=async (userId:string)=>{
+//   try {
+//     const response =await databases.listDocuments(
+//       appwriteConfig.databaseId,
+//       appwriteConfig.userRelationCollectionId,
+//       [Query.equal('targetUserId',userId)]
+//     );
+//     const followers=response.documents.map((doc)=>({
+//       id:doc.$id,
+//       name:doc.followerName,
+//       imageUrl:doc.followerImageUrl,
+//     }));
+//     console.log(getFollowers)
+//     return followers;
+//   } catch (error) {
+//     console.log("error fetching followers:",error);
+//     throw error;
+//   }
+// }
 
 //=====================comments post
 export async function commentPost(comments: INewComments) {
@@ -391,6 +473,9 @@ export async function likePost(postId: string, likesArray: string[]) {
     console.log(error);
   }
 }
+//=================follow / unfollow user
+
+
 
 // ============================== SAVE POST
 export async function savePost(userId: string, postId: string) {
@@ -530,6 +615,20 @@ export async function getUserById(userId: string) {
   }
 }
 
+export const getUserFromFollow=async (followerId:string)=>{
+  try {
+    const followDoc = await databases.getDocument(
+      appwriteConfig.databaseId,
+      appwriteConfig.userRelationCollectionId,
+      followerId
+    );
+
+    return followDoc
+  } catch (error) {
+    console.log('error fetching follow document:',error);
+  }
+}
+
 // ============================== UPDATE USER
 export async function updateUser(user: IUpdateUser) {
   const hasFileToUpdate = user.file.length > 0;
@@ -587,3 +686,19 @@ export async function updateUser(user: IUpdateUser) {
     console.log(error);
   }
 }
+// Function to fetch followers
+export const getFollowers = async (targetUserId: string) => {
+  try {
+    const followers = await databases.listDocuments(
+      appwriteConfig.databaseId,
+      appwriteConfig.userRelationCollectionId,
+      [
+        Query.equal('followedUserId', targetUserId) // Get documents where followedUserId is the target user
+      ]
+    );
+    
+    return followers.documents; // This will contain an array of documents with followerId and followedUserId
+  } catch (error) {
+    console.error("Error fetching followers:", error);
+  }
+};

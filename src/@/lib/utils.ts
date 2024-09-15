@@ -56,3 +56,7 @@ export const multiFormatDateString = (timestamp: string = ""): string => {
 export const checkIsLiked = (likeList: string[], userId: string) => {
   return likeList.includes(userId);
 };
+
+export const checkIsFollowed=(followList:string[],userId:string)=>{
+  return followList.includes(userId);
+}

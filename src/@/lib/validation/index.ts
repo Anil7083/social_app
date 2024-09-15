@@ -31,4 +31,7 @@ export const CommentValidation=z.object({
     imageId: z.string().optional(), // Define imageId as optional
 
 })
+export const FollowValidation=z.object({
+    follows:z.string().min(0,{message:"follow not found"})
+})
   
